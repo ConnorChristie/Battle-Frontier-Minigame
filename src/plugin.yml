@@ -1,0 +1,12 @@
+name: BattleFrontier
+version: 1.0.0
+main: us.arkyne.minigame.MinigameMain
+authors: [Chiller]
+depend: [ArkyneServerPlugin]
+load: POSTWORLD
+commands:
+    battlefrontier:
+        description: Admin use only
+        permission: arkyne.manage
+        usage: /battlefrontier <subcommand>
+        aliases: [bf]
