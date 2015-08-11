@@ -1,12 +1,13 @@
 package us.arkyne.minigame;
 
-import java.util.Map;
-
 import us.arkyne.minigame.command.BattleFrontierCommand;
+import us.arkyne.minigame.event.EventListener;
 import us.arkyne.server.minigame.Minigame;
 
 public class BattleFrontier extends Minigame
 {
+	private EventListener eventListener;
+	
 	public BattleFrontier()
 	{
 		super(MinigameMain.getInstance(), "BattleFrontier", "BF-G");
@@ -19,7 +20,11 @@ public class BattleFrontier extends Minigame
 	{
 		super.onLoad();
 		
-		getMain().getCommandHandler().registerCommand(BattleFrontierCommand.class);
+		eventListener = new EventListener();
+		
+		getMain().getCommandHandler().registerCommand(MinigameMain.getInstance(), BattleFrontierCommand.class);
+		
+		//Load all games
 	}
 
 	@Override
@@ -28,19 +33,5 @@ public class BattleFrontier extends Minigame
 		
 		
 		super.onUnload();
-	}
-	
-	public BattleFrontier(Map<String, Object> map)
-	{
-		super(map);
-		
-		
-	}
-	
-	public Map<String, Object> serialize()
-	{
-		Map<String, Object> map = serialize();
-		
-		return map;
 	}
 }
