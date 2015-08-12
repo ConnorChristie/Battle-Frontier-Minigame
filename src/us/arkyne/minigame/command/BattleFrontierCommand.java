@@ -17,7 +17,7 @@ import us.arkyne.server.util.Cuboid;
 
 public class BattleFrontierCommand implements CommandExecutor
 {
-	public static String[] commandNames = new String[] { "battleFrontier", "bf" };
+	public static String[] commandNames = new String[] { "battlefrontier", "bf" };
 	
 	private BattleFrontier bf;
 	
@@ -26,7 +26,7 @@ public class BattleFrontierCommand implements CommandExecutor
 		bf = MinigameMain.getInstance().getBattleFrontier();
 	}
 	
-	public boolean battleFrontierCommand(Command command)
+	public boolean battlefrontierCommand(Command command)
 	{
 		if (command.isSubCommandMessageIfError("creategame", 0, false, "Usage: /{cmd} creategame"))
 		{

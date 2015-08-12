@@ -3,7 +3,10 @@ package us.arkyne.minigame;
 import us.arkyne.minigame.command.BattleFrontierCommand;
 import us.arkyne.minigame.event.EventListener;
 import us.arkyne.minigame.game.BFGame;
+import us.arkyne.minigame.inventory.InventoryPreset;
+import us.arkyne.server.inventory.Item;
 import us.arkyne.server.minigame.Minigame;
+import us.arkyne.server.util.Util;
 
 public class BattleFrontier extends Minigame
 {
@@ -26,8 +29,6 @@ public class BattleFrontier extends Minigame
 		eventListener = new EventListener();
 		
 		getMain().getCommandHandler().registerCommand(MinigameMain.getInstance(), BattleFrontierCommand.class);
-		
-		//Load all games
 	}
 
 	@Override

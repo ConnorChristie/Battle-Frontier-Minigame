@@ -10,13 +10,13 @@ public class BFGame extends Game
 	public BFGame(int id)
 	{
 		super(id);
-		
-		minigame = MinigameMain.getInstance().getBattleFrontier();
 	}
 	
 	public void onLoad()
 	{
 		super.onLoad();
+		
+		minigame = MinigameMain.getInstance().getBattleFrontier();
 	}
 	
 	public void onUnload()

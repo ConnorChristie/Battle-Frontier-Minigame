@@ -4,7 +4,9 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.Plugin;
 
 import us.arkyne.minigame.game.BFGame;
+import us.arkyne.minigame.inventory.InventoryPreset;
 import us.arkyne.server.ArkyneMain;
+import us.arkyne.server.inventory.InventoryHandler;
 import us.arkyne.server.plugin.MinigamePlugin;
 
 public class MinigameMain extends MinigamePlugin
@@ -16,10 +18,10 @@ public class MinigameMain extends MinigamePlugin
 	public void onEnable()
 	{
 		main = this;
+		bf = new BattleFrontier();
 		
 		ConfigurationSerialization.registerClass(BFGame.class);
-		
-		bf = new BattleFrontier();
+		InventoryHandler.registerInventoryPresets(InventoryPreset.values());
 		
 		ArkyneMain.getInstance().getMinigameHandler().registerMinigame(bf);
 	}

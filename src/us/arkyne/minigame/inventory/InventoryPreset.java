@@ -39,4 +39,9 @@ public enum InventoryPreset implements Inventory
 	{
 		return items[index];
 	}
+	
+	public Item[] getItems()
+	{
+		return items;
+	}
 }
