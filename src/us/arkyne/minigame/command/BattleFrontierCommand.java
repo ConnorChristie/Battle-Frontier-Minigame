@@ -9,6 +9,7 @@ import com.sk89q.worldedit.bukkit.selections.Selection;
 import us.arkyne.minigame.BattleFrontier;
 import us.arkyne.minigame.MinigameMain;
 import us.arkyne.minigame.inventory.InventoryPreset;
+import us.arkyne.minigame.message.SignMessagePreset;
 import us.arkyne.server.ArkyneMain;
 import us.arkyne.server.command.Command;
 import us.arkyne.server.command.CommandExecutor;
@@ -58,7 +59,7 @@ public class BattleFrontierCommand implements CommandExecutor
 					{
 						Cuboid cuboid = new Cuboid((World) selection.getWorld(), selection.getNativeMinimumPoint(), selection.getNativeMaximumPoint());
 						
-						boolean created = game.createPregameLobby(command.getPlayer().getLocation(), cuboid, InventoryPreset.PREGAME_LOBBY);
+						boolean created = game.createPregameLobby(command.getPlayer().getLocation(), cuboid, InventoryPreset.BF_PREGAME_LOBBY, SignMessagePreset.BF_PREGAME_LOBBY);
 						
 						if (created)
 						{

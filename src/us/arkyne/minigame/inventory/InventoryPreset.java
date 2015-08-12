@@ -16,7 +16,7 @@ public enum InventoryPreset implements Inventory
 	
 	//TODO: Exit item has to exit to minigame lobby, not main lobby
 	
-	PREGAME_LOBBY(new Item[] {
+	BF_PREGAME_LOBBY(new Item[] {
 			/* Hotbar */ Item.i(NETHER_STAR, AQUA + "Pick a Class"), null, null, null, null, null, null, null, Item.i(REDSTONE_BLOCK, RED + "Exit to Main Lobby", (player) -> player.changeLobby(ArkyneMain.getInstance().getLobbyHandler().getMainLobby())),
 			/* Row 1 */ null, null, null, null, null, null, null, null, null,
 			/* Row 2 */ null, null, null, null, null, null, null, null, null,
