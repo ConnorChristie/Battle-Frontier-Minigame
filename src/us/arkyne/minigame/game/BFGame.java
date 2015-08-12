@@ -2,10 +2,18 @@ package us.arkyne.minigame.game;
 
 import java.util.Map;
 
+import us.arkyne.minigame.MinigameMain;
 import us.arkyne.server.game.Game;
 
 public class BFGame extends Game
 {
+	public BFGame(int id)
+	{
+		super(id);
+		
+		minigame = MinigameMain.getInstance().getBattleFrontier();
+	}
+	
 	public void onLoad()
 	{
 		super.onLoad();
