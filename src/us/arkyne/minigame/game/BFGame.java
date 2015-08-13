@@ -4,12 +4,13 @@ import java.util.Map;
 
 import us.arkyne.minigame.MinigameMain;
 import us.arkyne.server.game.Game;
+import us.arkyne.server.minigame.Minigame;
 
 public class BFGame extends Game
 {
-	public BFGame(int id)
+	public BFGame(Minigame minigame, int id)
 	{
-		super(id);
+		super(minigame, id);
 	}
 	
 	public void onLoad()

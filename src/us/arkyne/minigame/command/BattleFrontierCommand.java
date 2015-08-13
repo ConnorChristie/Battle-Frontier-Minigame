@@ -43,13 +43,44 @@ public class BattleFrontierCommand implements CommandExecutor
 			}
 			
 			return true;
-		} else if (command.isSubCommandMessageIfError("createlobby", 1, false, "First select the boundry's with worldedit", "Then stand where you you want the spawn point to be", "Then execute: /{cmd} createlobby <id>"))
+		} else if (command.isSubCommandMessageIfError("createlobby", 0, false, "First select the boundry's with worldedit", "Then stand where you you want the spawn point to be", "Then execute: /{cmd} createlobby"))
+		{
+			try
+			{
+				Selection selection = ArkyneMain.getInstance().getWorldEdit().getSelection(command.getPlayer().getOnlinePlayer());
+				
+				if (selection != null && selection instanceof CuboidSelection)
+				{
+					Cuboid cuboid = new Cuboid((World) selection.getWorld(), selection.getNativeMinimumPoint(), selection.getNativeMaximumPoint());
+					
+					boolean created = bf.setLobby(command.getPlayer().getLocation(), cuboid, InventoryPreset.BF_LOBBY, SignMessagePreset.BF_LOBBY);
+					
+					if (created)
+					{
+						command.sendSenderMessage("Successfully created the minigame lobby!", ChatColor.GREEN);
+					} else
+					{
+						command.sendSenderMessage("There is already a lobby setup for this minigame!", ChatColor.RED);
+					}
+				} else
+				{
+					command.sendSenderMessage("First select the boundry's with worldedit", ChatColor.RED);
+					command.sendSenderMessage("Then stand where you want the spawn point to be", ChatColor.RED);
+					command.sendSenderMessage("Then execute: /{cmd} createlobby <id>", ChatColor.RED);
+				}
+			} catch (NumberFormatException e)
+			{
+				command.sendSenderMessage("Invalid ID entered, Usage: /{cmd} createlobby", ChatColor.RED);
+			}
+			
+			return true;
+		} else if (command.isSubCommandMessageIfError("creategamelobby", 1, false, "First select the boundry's with worldedit", "Then stand where you you want the spawn point to be", "Then execute: /{cmd} creategamelobby <gameid>"))
 		{
 			try
 			{
 				int id = Integer.parseInt(command.getArg(0));
 				
-				Game game = bf.getGame(id);
+				Game game = bf.getGameHandler().getGame(id);
 				
 				if (game != null)
 				{
@@ -80,7 +111,7 @@ public class BattleFrontierCommand implements CommandExecutor
 				}
 			} catch (NumberFormatException e)
 			{
-				command.sendSenderMessage("Invalid ID entered, Usage: /{cmd} createlobby <id>", ChatColor.RED);
+				command.sendSenderMessage("Invalid ID entered, Usage: /{cmd} creategamelobby <gameid>", ChatColor.RED);
 			}
 			
 			return true;
