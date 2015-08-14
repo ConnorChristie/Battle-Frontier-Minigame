@@ -10,8 +10,6 @@ public enum InventoryPreset implements Inventory
 {
 	//Arrays have to be exactly 36 deep
 	
-	//TODO: Change item[] to InventoryItem[], have to create an interface for the enum as well
-	
 	BF_LOBBY(new InventoryItem[] {
 			/* Hotbar */ us.arkyne.server.inventory.item.InventoryItemPreset.DUMMY_ITEM, null, null, null, null, null, null, null, InventoryItemPreset.EXIT_TO_MAINLOBBY,
 			/* Row 1 */ null, null, null, null, null, null, null, null, null,

@@ -3,6 +3,7 @@ package us.arkyne.minigame.game;
 import java.util.Map;
 
 import us.arkyne.minigame.MinigameMain;
+import us.arkyne.minigame.message.SignMessagePreset;
 import us.arkyne.server.game.Game;
 import us.arkyne.server.minigame.Minigame;
 
@@ -10,7 +11,7 @@ public class BFGame extends Game
 {
 	public BFGame(Minigame minigame, int id)
 	{
-		super(minigame, id);
+		super(minigame, id, 20, SignMessagePreset.BF_GAME);
 	}
 	
 	public void onLoad()

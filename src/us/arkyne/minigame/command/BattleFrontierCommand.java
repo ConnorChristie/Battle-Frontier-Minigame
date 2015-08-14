@@ -36,7 +36,7 @@ public class BattleFrontierCommand implements CommandExecutor
 			if (id != -1)
 			{
 				command.sendSenderMessage("Successfully created a new game, ID: " + ChatColor.AQUA + id, ChatColor.GREEN);
-				command.sendSenderMessage("Next create a lobby with: " + ChatColor.AQUA + "/{cmd} createlobby " + id, ChatColor.GREEN);
+				command.sendSenderMessage("Next create a lobby with: " + ChatColor.AQUA + "/{cmd} creategamelobby " + id, ChatColor.GREEN);
 			} else
 			{
 				command.sendSenderMessage("Could not create a new game", ChatColor.RED);
@@ -45,32 +45,26 @@ public class BattleFrontierCommand implements CommandExecutor
 			return true;
 		} else if (command.isSubCommandMessageIfError("createlobby", 0, false, "First select the boundry's with worldedit", "Then stand where you you want the spawn point to be", "Then execute: /{cmd} createlobby"))
 		{
-			try
+			Selection selection = ArkyneMain.getInstance().getWorldEdit().getSelection(command.getPlayer().getOnlinePlayer());
+			
+			if (selection != null && selection instanceof CuboidSelection)
 			{
-				Selection selection = ArkyneMain.getInstance().getWorldEdit().getSelection(command.getPlayer().getOnlinePlayer());
+				Cuboid cuboid = new Cuboid((World) selection.getWorld(), selection.getNativeMinimumPoint(), selection.getNativeMaximumPoint());
 				
-				if (selection != null && selection instanceof CuboidSelection)
+				boolean created = bf.setLobby(command.getPlayer().getLocation(), cuboid, InventoryPreset.BF_LOBBY, SignMessagePreset.BF_LOBBY);
+				
+				if (created)
 				{
-					Cuboid cuboid = new Cuboid((World) selection.getWorld(), selection.getNativeMinimumPoint(), selection.getNativeMaximumPoint());
-					
-					boolean created = bf.setLobby(command.getPlayer().getLocation(), cuboid, InventoryPreset.BF_LOBBY, SignMessagePreset.BF_LOBBY);
-					
-					if (created)
-					{
-						command.sendSenderMessage("Successfully created the minigame lobby!", ChatColor.GREEN);
-					} else
-					{
-						command.sendSenderMessage("There is already a lobby setup for this minigame!", ChatColor.RED);
-					}
+					command.sendSenderMessage("Successfully created the minigame lobby!", ChatColor.GREEN);
 				} else
 				{
-					command.sendSenderMessage("First select the boundry's with worldedit", ChatColor.RED);
-					command.sendSenderMessage("Then stand where you want the spawn point to be", ChatColor.RED);
-					command.sendSenderMessage("Then execute: /{cmd} createlobby <id>", ChatColor.RED);
+					command.sendSenderMessage("There is already a lobby setup for this minigame!", ChatColor.RED);
 				}
-			} catch (NumberFormatException e)
+			} else
 			{
-				command.sendSenderMessage("Invalid ID entered, Usage: /{cmd} createlobby", ChatColor.RED);
+				command.sendSenderMessage("First select the boundry's with worldedit", ChatColor.RED);
+				command.sendSenderMessage("Then stand where you want the spawn point to be", ChatColor.RED);
+				command.sendSenderMessage("Then execute: /{cmd} createlobby", ChatColor.RED);
 			}
 			
 			return true;
@@ -90,7 +84,7 @@ public class BattleFrontierCommand implements CommandExecutor
 					{
 						Cuboid cuboid = new Cuboid((World) selection.getWorld(), selection.getNativeMinimumPoint(), selection.getNativeMaximumPoint());
 						
-						boolean created = game.createPregameLobby(command.getPlayer().getLocation(), cuboid, InventoryPreset.BF_PREGAME_LOBBY, SignMessagePreset.BF_PREGAME_LOBBY);
+						boolean created = game.createPregameLobby(command.getPlayer().getLocation(), cuboid, InventoryPreset.BF_PREGAME_LOBBY, SignMessagePreset.BF_GAME);
 						
 						if (created)
 						{

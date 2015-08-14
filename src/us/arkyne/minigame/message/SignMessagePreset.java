@@ -12,9 +12,9 @@ public enum SignMessagePreset implements SignMessage
 		ChatColor.DARK_GREEN +  "{count} Players",
 		ChatColor.BLUE +   "Minigame Lobby"
 	),
-	BF_PREGAME_LOBBY(
-		ChatColor.DARK_BLUE +   "{lobby}",
-		ChatColor.DARK_PURPLE + "{lobby-id}",
+	BF_GAME(
+		ChatColor.DARK_BLUE +   "{game}",
+		ChatColor.DARK_PURPLE + "{game-id}",
 		ChatColor.DARK_GREEN +  "{count}/{max} Players",
 		ChatColor.BLUE +        "{map}"
 	);
