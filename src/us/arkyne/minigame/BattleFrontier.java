@@ -9,7 +9,7 @@ public class BattleFrontier extends Minigame
 {
 	public BattleFrontier()
 	{
-		super(MinigameMain.getInstance(), "BattleFrontier", "BF-G");
+		super(MinigameMain.getInstance(), "BattleFrontier", "BF");
 		
 		//Try not to use this method
 	}

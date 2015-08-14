@@ -1,51 +1,56 @@
 package us.arkyne.minigame.inventory;
 
-import static org.bukkit.ChatColor.AQUA;
-import static org.bukkit.ChatColor.RED;
-import static org.bukkit.Material.NETHER_STAR;
-import static org.bukkit.Material.REDSTONE_BLOCK;
+import org.bukkit.inventory.ItemStack;
 
 import us.arkyne.server.inventory.Inventory;
-import us.arkyne.server.inventory.Item;
+import us.arkyne.server.inventory.item.InventoryItem;
 import us.arkyne.server.player.ArkynePlayer;
 
 public enum InventoryPreset implements Inventory
 {
 	//Arrays have to be exactly 36 deep
 	
-	//TODO: Exit item has to exit to minigame lobby, not main lobby
+	//TODO: Change item[] to InventoryItem[], have to create an interface for the enum as well
 	
-	BF_LOBBY(new Item[] {
-			/* Hotbar */ Item.i(NETHER_STAR, AQUA + "Pick a Class"), null, null, null, null, null, null, null, Item.i(REDSTONE_BLOCK, RED + "Exit to Main Lobby", (player) -> player.gotoMainLobby()),
+	BF_LOBBY(new InventoryItem[] {
+			/* Hotbar */ us.arkyne.server.inventory.item.InventoryItemPreset.DUMMY_ITEM, null, null, null, null, null, null, null, InventoryItemPreset.EXIT_TO_MAINLOBBY,
 			/* Row 1 */ null, null, null, null, null, null, null, null, null,
 			/* Row 2 */ null, null, null, null, null, null, null, null, null,
 			/* Row 3 */ null, null, null, null, null, null, null, null, null
 	}),
-	BF_PREGAME_LOBBY(new Item[] {
-			/* Hotbar */ Item.i(NETHER_STAR, AQUA + "Pick a Class"), null, null, null, null, null, null, null, Item.i(REDSTONE_BLOCK, RED + "Exit to Main Lobby", (player) -> player.gotoMainLobby()),
+	BF_PREGAME_LOBBY(new InventoryItem[] {
+			/* Hotbar */ us.arkyne.server.inventory.item.InventoryItemPreset.DUMMY_ITEM, null, null, null, null, null, null, null, InventoryItemPreset.EXIT_TO_MAINLOBBY,
 			/* Row 1 */ null, null, null, null, null, null, null, null, null,
 			/* Row 2 */ null, null, null, null, null, null, null, null, null,
 			/* Row 3 */ null, null, null, null, null, null, null, null, null,
 	});
 	
-	private Item[] items;
+	private InventoryItem[] items;
 	
-	private InventoryPreset(Item[] items)
+	private InventoryPreset(InventoryItem[] items)
 	{
 		this.items = items;
 	}
 	
 	public void updateInventory(ArkynePlayer player)
 	{
-		player.getOnlinePlayer().getInventory().setContents(items);
+		ItemStack[] itemStacks = new ItemStack[items.length];
+		
+		for (int i = 0; i < items.length; i++)
+		{
+			itemStacks[i] = items[i] != null ? items[i].getItem() : null;
+		}
+		
+		player.getOnlinePlayer().getInventory().setContents(itemStacks);
 	}
 	
-	public Item getItem(int index)
+	public InventoryItem getItem(int index)
 	{
 		return items[index];
 	}
-	
-	public Item[] getItems()
+
+	@Override
+	public InventoryItem[] getItems()
 	{
 		return items;
 	}
