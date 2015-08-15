@@ -11,7 +11,8 @@ import us.arkyne.server.inventory.item.InventoryItem;
 
 public enum InventoryItemPreset implements InventoryItem
 {
-	EXIT_TO_MAINLOBBY(ChatColor.RED + "Exit to Main Lobby", Material.REDSTONE_BLOCK, (player) -> ArkyneMain.getInstance().getMainLobbyHandler().getMainLobby().join(player));
+	EXIT_MINIGAME(ChatColor.RED + "Exit to Main Lobby", Material.REDSTONE_BLOCK, (player) -> ArkyneMain.getInstance().getMainLobbyHandler().getMainLobby().join(player)),
+	EXIT_GAME(ChatColor.RED + "Exit to Minigame Lobby", Material.REDSTONE_BLOCK, (player) -> { if (player.getJoinable() != null) player.getJoinable().leave(player); });
 	
 	private ItemStack item;
 	private InventoryClick inventoryClick;

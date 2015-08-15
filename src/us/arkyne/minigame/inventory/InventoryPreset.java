@@ -11,13 +11,19 @@ public enum InventoryPreset implements Inventory
 	//Arrays have to be exactly 36 deep
 	
 	BF_LOBBY(new InventoryItem[] {
-			/* Hotbar */ us.arkyne.server.inventory.item.InventoryItemPreset.DUMMY_ITEM, null, null, null, null, null, null, null, InventoryItemPreset.EXIT_TO_MAINLOBBY,
+			/* Hotbar */ us.arkyne.server.inventory.item.InventoryItemPreset.DUMMY_ITEM, null, null, null, null, null, null, null, InventoryItemPreset.EXIT_MINIGAME,
 			/* Row 1 */ null, null, null, null, null, null, null, null, null,
 			/* Row 2 */ null, null, null, null, null, null, null, null, null,
 			/* Row 3 */ null, null, null, null, null, null, null, null, null
 	}),
 	BF_PREGAME_LOBBY(new InventoryItem[] {
-			/* Hotbar */ us.arkyne.server.inventory.item.InventoryItemPreset.DUMMY_ITEM, null, null, null, null, null, null, null, InventoryItemPreset.EXIT_TO_MAINLOBBY,
+			/* Hotbar */ us.arkyne.server.inventory.item.InventoryItemPreset.DUMMY_ITEM, null, null, null, null, null, null, null, InventoryItemPreset.EXIT_GAME,
+			/* Row 1 */ null, null, null, null, null, null, null, null, null,
+			/* Row 2 */ null, null, null, null, null, null, null, null, null,
+			/* Row 3 */ null, null, null, null, null, null, null, null, null,
+	}),
+	BF_GAME(new InventoryItem[] {
+			/* Hotbar */ us.arkyne.server.inventory.item.InventoryItemPreset.DUMMY_ITEM, null, null, null, null, null, null, null, null,
 			/* Row 1 */ null, null, null, null, null, null, null, null, null,
 			/* Row 2 */ null, null, null, null, null, null, null, null, null,
 			/* Row 3 */ null, null, null, null, null, null, null, null, null,

@@ -9,9 +9,9 @@ import us.arkyne.server.minigame.Minigame;
 
 public class BFGame extends Game
 {
-	public BFGame(Minigame minigame, int id)
+	public BFGame(Minigame minigame, int id, String mapName)
 	{
-		super(minigame, id, 20, SignMessagePreset.BF_GAME);
+		super(minigame, id, 20, 2, mapName, SignMessagePreset.BF_GAME);
 	}
 	
 	public void onLoad()

@@ -33,13 +33,13 @@ public class BattleFrontier extends Minigame
 	}
 
 	@Override
-	public int createGame()
+	public int createGame(String mapName)
 	{
 		int id = getGameHandler().getNextId();
 		
 		if (!getGameHandler().containsGame(id))
 		{
-			BFGame game = new BFGame(this, id);
+			BFGame game = new BFGame(this, id, mapName);
 			
 			getGameHandler().addGame(game);
 			getGameHandler().save(game);
