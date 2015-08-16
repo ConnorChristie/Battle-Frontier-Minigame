@@ -66,6 +66,11 @@ public class BFGame extends Game
 		
 	}
 	
+	protected boolean canPvP()
+	{
+		return true;
+	}
+	
 	private void spawnPlayers()
 	{
 		List<String> teams = getArena().getTeams();
