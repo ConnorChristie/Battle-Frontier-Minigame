@@ -12,13 +12,13 @@ import com.sk89q.worldedit.bukkit.selections.Selection;
 import us.arkyne.minigame.BattleFrontier;
 import us.arkyne.minigame.MinigameMain;
 import us.arkyne.minigame.game.BFArena;
-import us.arkyne.minigame.game.GameType;
+import us.arkyne.minigame.game.ArenaMap;
 import us.arkyne.minigame.inventory.InventoryPreset;
 import us.arkyne.minigame.message.SignMessagePreset;
 import us.arkyne.server.ArkyneMain;
 import us.arkyne.server.command.Command;
 import us.arkyne.server.command.CommandExecutor;
-import us.arkyne.server.game.Arena;
+import us.arkyne.server.game.arena.Arena;
 import us.arkyne.server.game.Game;
 import us.arkyne.server.util.Cuboid;
 
@@ -28,7 +28,7 @@ public class BattleFrontierCommand implements CommandExecutor
 	
 	private BattleFrontier bf;
 	
-	private Map<Integer, GameType> gameTypes = new HashMap<Integer, GameType>();
+	private Map<Integer, ArenaMap> gameTypes = new HashMap<Integer, ArenaMap>();
 	
 	public BattleFrontierCommand()
 	{
@@ -41,7 +41,7 @@ public class BattleFrontierCommand implements CommandExecutor
 		{
 			//TODO: Create game with game type
 			
-			GameType gameType = GameType.valueOf(command.getArg(0).toUpperCase());
+			ArenaMap gameType = ArenaMap.valueOf(command.getArg(0).toUpperCase());
 			
 			int id = bf.createGame(gameType.getMapName());
 			
@@ -106,7 +106,7 @@ public class BattleFrontierCommand implements CommandExecutor
 							{
 								Cuboid cuboid = new Cuboid((World) selection.getWorld(), selection.getNativeMinimumPoint(), selection.getNativeMaximumPoint());
 								
-								GameType gameType = gameTypes.get(id);
+								ArenaMap gameType = gameTypes.get(id);
 								boolean created = false;
 								
 								if (toSet.equalsIgnoreCase("lobby"))

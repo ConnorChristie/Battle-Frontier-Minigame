@@ -15,7 +15,7 @@ public enum SignMessagePreset implements SignMessage
 	BF_GAME(
 		ChatColor.DARK_BLUE +   "{game}",
 		ChatColor.DARK_PURPLE + "{game-id}",
-		ChatColor.DARK_GREEN +  "{count}/{max} Players",
+		ChatColor.DARK_GREEN +  "{status}",
 		ChatColor.BLUE +        "{map}"
 	);
 	
