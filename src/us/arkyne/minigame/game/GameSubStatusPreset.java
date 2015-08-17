@@ -10,7 +10,7 @@ public enum GameSubStatusPreset implements IGameSubStatus
 	PREGAME_COUNTDOWN(5, "{time} seconds until the game starts!", ChatColor.GOLD + "Game starting in:"),
 	
 	GAME_COUNTDOWN(5,  ChatColor.GREEN + "{time} seconds until the game starts!", ChatColor.GOLD + "Game starting in:"),
-	GAME_PLAYING(  20, ChatColor.RED + "{time} seconds until the game ends!", null),
+	GAME_PLAYING(  50, ChatColor.RED + "{time} seconds until the game ends!", null),
 	
 	GAME_END(      5,  null, null),
 	GAME_REGEN(   -1,  null, null);

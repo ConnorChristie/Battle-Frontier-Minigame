@@ -2,7 +2,7 @@ name: BattleFrontier
 version: 1.0.0
 main: us.arkyne.minigame.MinigameMain
 authors: [Chiller]
-depend: [ArkyneServerPlugin]
+depend: [ArkyneServerPlugin, ArkyneNMSPlugin]
 load: POSTWORLD
 commands:
     battlefrontier:

@@ -4,15 +4,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
+import org.bukkit.inventory.ItemStack;
 
 import us.arkyne.minigame.MinigameMain;
+import us.arkyne.minigame.inventory.InventoryPreset;
+import us.arkyne.minigame.inventory.item.Kit.Tier;
+import us.arkyne.minigame.inventory.item.WarriorKit;
 import us.arkyne.minigame.message.SignMessagePreset;
 import us.arkyne.server.game.Game;
 import us.arkyne.server.game.status.GameSubStatus;
 import us.arkyne.server.game.status.IGameSubStatus;
+import us.arkyne.server.inventory.Inventory;
 import us.arkyne.server.minigame.Minigame;
 import us.arkyne.server.player.ArkynePlayer;
 
@@ -46,14 +57,89 @@ public class BFGame extends Game
 	
 	protected void onGameEnd()
 	{
-		
+		//Display message and what not
 	}
 	
-	public void onPlayerDeath(ArkynePlayer player, DamageCause cause)
+	public void onPlayerDamage(ArkynePlayer player, EntityDamageEvent event)
 	{
-		sendPlayersMessage(ChatColor.GOLD + player.getOnlinePlayer().getName() + ChatColor.RED + " has died from " + cause.toString(), ChatColor.RED);
+		if (event instanceof EntityDamageByEntityEvent)
+		{
+			EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) event;
+			
+			if (damageEvent.getDamager() instanceof HumanEntity)
+			{
+				ItemStack item = ((HumanEntity) damageEvent.getDamager()).getItemInHand();
+				
+				if (item.getType() == Material.NETHER_STAR)
+				{
+					event.setDamage(10);
+				}
+			}
+		}
+	}
+	
+	public void onPlayerDeath(ArkynePlayer player, ArkynePlayer killer)
+	{
+		boolean coreDestroyed = true;
 		
-		player.teleport(getArena().getSpawn(player.getExtra("team").toString()));
+		if (coreDestroyed)
+		{
+			player.getOnlinePlayer().setGameMode(GameMode.SPECTATOR);
+		} else
+		{
+			//player.teleport(getArena().getSpawn(player.getExtra("team").toString()));
+		}
+	}
+	
+	public void onCloneTargetChange(ArkynePlayer player, EntityTargetLivingEntityEvent event)
+	{
+		if (gameSubStatus == GameSubStatus.GAME_PLAYING)
+		{
+			//First check original target
+			
+			if (event.getTarget() instanceof Player)
+			{
+				ArkynePlayer target = getMain().getArkynePlayerHandler().getPlayer((Player) event.getTarget());
+				
+				if (target != null && target.getJoinable() != null && target.getJoinable().equals(this))
+				{
+					if (!player.getExtra("team").toString().equalsIgnoreCase(target.getExtra("team").toString()))
+					{
+						//Target is good and not on the same team
+						
+						return;
+					}
+				}
+			}
+			
+			double shortestDistance = 10;
+			ArkynePlayer closestPlayer = null;
+			
+			for (ArkynePlayer p : players)
+			{
+				if (p.getOnlinePlayer().getGameMode() == GameMode.SURVIVAL && !player.getExtra("team").toString().equalsIgnoreCase(p.getExtra("team").toString()))
+				{
+					if (((LivingEntity) event.getEntity()).hasLineOfSight(p.getOnlinePlayer()))
+					{
+						double distance = event.getEntity().getLocation().distance(p.getLocation());
+						
+						if (distance < shortestDistance)
+						{
+							shortestDistance = distance;
+							closestPlayer = p;
+						}
+					}
+				}
+			}
+			
+			if (closestPlayer != null && closestPlayer.isOnline())
+			{
+				event.setTarget(closestPlayer.getOnlinePlayer());
+			} else
+			{
+				event.setCancelled(true);
+			}
+		}
 	}
 	
 	protected IGameSubStatus getGameSubStatus(GameSubStatus status)
@@ -71,6 +157,16 @@ public class BFGame extends Game
 		return true;
 	}
 	
+	protected Inventory getPlayerInventory(ArkynePlayer player)
+	{
+		if (player.hasExtra("inventory"))
+		{
+			return (Inventory) player.getExtra("inventory");
+		}
+		
+		return InventoryPreset.BF_LOBBY;
+	}
+	
 	private void spawnPlayers()
 	{
 		List<String> teams = getArena().getTeams();
@@ -79,6 +175,9 @@ public class BFGame extends Game
 		
 		for (ArkynePlayer player : players)
 		{
+			player.setExtra("inventory", new WarriorKit(Tier.NORMAL));
+			player.updateInventory();
+			
 			String team = teams.get(teamIndex);
 			
 			Location loc = getArena().getSpawn(team).clone();

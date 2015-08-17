@@ -12,8 +12,6 @@ import us.arkyne.server.util.Cuboid;
 
 public class BFArena extends Arena
 {
-	//TODO: This just contains the bounds, spawn, inventory and regen method
-	
 	public BFArena(Game game, Cuboid cuboid, Inventory inventory)
 	{
 		super(game, cuboid, inventory);

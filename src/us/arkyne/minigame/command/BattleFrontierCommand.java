@@ -84,81 +84,87 @@ public class BattleFrontierCommand implements CommandExecutor
 			return true;
 		} else if (command.isSubCommandMessageIfError("game", 1, true, "/{cmd} game <id> set <lobby|arena|spawn> [args]"))
 		{
-			int id = Integer.parseInt(command.getArg(0));
-			
-			Game game = bf.getGameHandler().getGame(id);
-			
-			if (game != null)
+			try
 			{
-				String subCommand = command.getArg(1);
+				int id = Integer.parseInt(command.getArg(0));
 				
-				if (subCommand.equalsIgnoreCase("set"))
+				Game game = bf.getGameHandler().getGame(id);
+				
+				if (game != null)
 				{
-					if (gameTypes.containsKey(id))
+					String subCommand = command.getArg(1);
+					
+					if (subCommand.equalsIgnoreCase("set"))
 					{
-						String toSet = command.getArg(2);
-						
-						if (toSet.equalsIgnoreCase("lobby") || toSet.equalsIgnoreCase("arena"))
+						if (gameTypes.containsKey(id))
 						{
-							Selection selection = ArkyneMain.getInstance().getWorldEdit().getSelection(command.getPlayer().getOnlinePlayer());
+							String toSet = command.getArg(2);
 							
-							if (selection != null && selection instanceof CuboidSelection)
+							if (toSet.equalsIgnoreCase("lobby") || toSet.equalsIgnoreCase("arena"))
 							{
-								Cuboid cuboid = new Cuboid((World) selection.getWorld(), selection.getNativeMinimumPoint(), selection.getNativeMaximumPoint());
+								Selection selection = ArkyneMain.getInstance().getWorldEdit().getSelection(command.getPlayer().getOnlinePlayer());
 								
-								ArenaMap gameType = gameTypes.get(id);
-								boolean created = false;
-								
-								if (toSet.equalsIgnoreCase("lobby"))
+								if (selection != null && selection instanceof CuboidSelection)
 								{
-									created = game.createPregameLobby(command.getPlayer().getLocation(), cuboid, gameType.getPregameInventory(), SignMessagePreset.BF_GAME);
+									Cuboid cuboid = new Cuboid((World) selection.getWorld(), selection.getNativeMinimumPoint(), selection.getNativeMaximumPoint());
+									
+									ArenaMap gameType = gameTypes.get(id);
+									boolean created = false;
+									
+									if (toSet.equalsIgnoreCase("lobby"))
+									{
+										created = game.createPregameLobby(command.getPlayer().getLocation(), cuboid, gameType.getPregameInventory(), SignMessagePreset.BF_GAME);
+									} else
+									{
+										created = game.createArena(new BFArena(game, cuboid, gameType.getGameInventory()));
+									}
+									
+									if (created)
+									{
+										command.sendSenderMessage("Successfully created the " + toSet + "!", ChatColor.GREEN);
+									} else
+									{
+										command.sendSenderMessage("There is already a " + toSet + " setup for this game!", ChatColor.RED);
+									}
 								} else
 								{
-									created = game.createArena(new BFArena(game, cuboid, gameType.getGameInventory()));
+									command.sendSenderMessage("Please select a region with worldedit before setting the " + toSet, ChatColor.RED);
 								}
+							} else if (toSet.equalsIgnoreCase("spawn"))
+							{
+								Arena arena = game.getArena();
 								
-								if (created)
+								if (arena != null)
 								{
-									command.sendSenderMessage("Successfully created the " + toSet + "!", ChatColor.GREEN);
+									arena.addSpawn(command.getArg(3), command.getPlayer().getLocation());
+									
+									command.sendSenderMessage("Successfully set the spawn for the " + command.getArg(3) + " team!", ChatColor.GREEN);
 								} else
 								{
-									command.sendSenderMessage("There is already a " + toSet + " setup for this game!", ChatColor.RED);
+									command.sendSenderMessage("Please create an arena before setting the spawns", ChatColor.RED);
 								}
 							} else
 							{
-								command.sendSenderMessage("Please select a region with worldedit before setting the " + toSet, ChatColor.RED);
-							}
-						} else if (toSet.equalsIgnoreCase("spawn"))
-						{
-							Arena arena = game.getArena();
-							
-							if (arena != null)
-							{
-								arena.addSpawn(command.getArg(3), command.getPlayer().getLocation());
-								
-								command.sendSenderMessage("Successfully set the spawn for the " + command.getArg(3) + " team!", ChatColor.GREEN);
-							} else
-							{
-								command.sendSenderMessage("Please create an arena before setting the spawns", ChatColor.RED);
+								command.sendSenderMessage("Usage: /{cmd} game " + id + " set <lobby|arena|spawn> [args]", ChatColor.RED);
 							}
 						} else
 						{
-							command.sendSenderMessage("Usage: /{cmd} game " + id + " set <lobby|arena|spawn> [args]", ChatColor.RED);
+							command.sendSenderMessage("Could not find a game with that ID", ChatColor.RED);
+							command.sendSenderMessage("Are you sure you just created a game?", ChatColor.RED);
 						}
-					} else
-					{
-						command.sendSenderMessage("Could not find a game with that ID", ChatColor.RED);
-						command.sendSenderMessage("Are you sure you just created a game?", ChatColor.RED);
 					}
+					
+					game.save();
+				} else
+				{
+					command.sendSenderMessage("Could not find a game with that ID", ChatColor.RED);
 				}
 				
-				game.save();
-			} else
+				command.sendSenderOptionalMessage("Usage: /{cmd} game <id> <command> [args]", ChatColor.RED);
+			} catch (NumberFormatException e)
 			{
 				command.sendSenderMessage("Could not find a game with that ID", ChatColor.RED);
 			}
-			
-			command.sendSenderOptionalMessage("Usage: /{cmd} game <id> <command> [args]", ChatColor.RED);
 			
 			return true;
 		}
