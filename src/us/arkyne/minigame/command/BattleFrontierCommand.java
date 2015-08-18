@@ -134,7 +134,7 @@ public class BattleFrontierCommand implements CommandExecutor
 								
 								if (arena != null)
 								{
-									arena.addSpawn(command.getArg(3), command.getPlayer().getLocation());
+									arena.addTeam(command.getArg(3), command.getPlayer().getLocation());
 									
 									command.sendSenderMessage("Successfully set the spawn for the " + command.getArg(3) + " team!", ChatColor.GREEN);
 								} else

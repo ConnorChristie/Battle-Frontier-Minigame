@@ -28,7 +28,7 @@ public class BFArena extends Arena
 	
 	public Location getSpawn(ArkynePlayer player)
 	{
-		return spawns.get(player.getExtra("team").toString());
+		return getTeam(player.getExtra("team").toString()).getSpawn();
 	}
 	
 	public BFArena(Map<String, Object> map)

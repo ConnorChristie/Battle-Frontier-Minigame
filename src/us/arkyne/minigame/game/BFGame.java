@@ -23,6 +23,7 @@ import us.arkyne.minigame.message.SignMessagePreset;
 import us.arkyne.server.game.Game;
 import us.arkyne.server.game.status.GameSubStatus;
 import us.arkyne.server.game.status.IGameSubStatus;
+import us.arkyne.server.game.team.ArkyneTeam;
 import us.arkyne.server.inventory.Inventory;
 import us.arkyne.server.minigame.Minigame;
 import us.arkyne.server.player.ArkynePlayer;
@@ -179,7 +180,7 @@ public class BFGame extends Game
 	
 	private void spawnPlayers()
 	{
-		List<String> teams = getArena().getTeams();
+		List<ArkyneTeam> teams = getArena().getTeams();
 		
 		int teamIndex = 0;
 		
@@ -188,9 +189,9 @@ public class BFGame extends Game
 			player.setExtra("inventory", new WarriorKit(Tier.PRO));
 			player.updateInventory();
 			
-			String team = teams.get(teamIndex);
+			String team = teams.get(teamIndex).getTeamName();
 			
-			Location loc = getArena().getSpawn(team).clone();
+			Location loc = getArena().getTeam(team).getSpawn().clone();
 			loc.add(random.nextInt(spawnRadius * 2) - spawnRadius, 0, random.nextInt(spawnRadius * 2) - spawnRadius);
 			
 			player.setExtra("team", team);
