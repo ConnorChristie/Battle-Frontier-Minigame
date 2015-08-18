@@ -28,7 +28,7 @@ public class BattleFrontierCommand implements CommandExecutor
 	
 	private BattleFrontier bf;
 	
-	private Map<Integer, ArenaMap> gameTypes = new HashMap<Integer, ArenaMap>();
+	private Map<Integer, ArenaMap> arenaMaps = new HashMap<Integer, ArenaMap>();
 	
 	public BattleFrontierCommand()
 	{
@@ -39,18 +39,16 @@ public class BattleFrontierCommand implements CommandExecutor
 	{
 		if (command.isSubCommandMessageIfError("creategame", 1, false, "Usage: /{cmd} creategame <map>"))
 		{
-			//TODO: Create game with game type
+			ArenaMap arenaMap = ArenaMap.valueOf(command.getArg(0).toUpperCase());
 			
-			ArenaMap gameType = ArenaMap.valueOf(command.getArg(0).toUpperCase());
-			
-			int id = bf.createGame(gameType.getMapName());
+			int id = bf.createGame(arenaMap.getMapName(), arenaMap.getWorldName());
 			
 			if (id != -1)
 			{
 				command.sendSenderMessage("Successfully created a new game, ID: " + ChatColor.AQUA + id, ChatColor.GREEN);
-				command.sendSenderMessage("Next create a lobby with: " + ChatColor.AQUA + "/{cmd} creategamelobby " + id, ChatColor.GREEN);
+				command.sendSenderMessage("Next create a lobby with: " + ChatColor.AQUA + "/{cmd} game " + id + " set lobby", ChatColor.GREEN);
 				
-				gameTypes.put(id, gameType);
+				arenaMaps.put(id, arenaMap);
 			} else
 			{
 				command.sendSenderMessage("Could not create a new game", ChatColor.RED);
@@ -96,7 +94,7 @@ public class BattleFrontierCommand implements CommandExecutor
 					
 					if (subCommand.equalsIgnoreCase("set"))
 					{
-						if (gameTypes.containsKey(id))
+						if (arenaMaps.containsKey(id))
 						{
 							String toSet = command.getArg(2);
 							
@@ -108,15 +106,15 @@ public class BattleFrontierCommand implements CommandExecutor
 								{
 									Cuboid cuboid = new Cuboid((World) selection.getWorld(), selection.getNativeMinimumPoint(), selection.getNativeMaximumPoint());
 									
-									ArenaMap gameType = gameTypes.get(id);
+									ArenaMap arenaMap = arenaMaps.get(id);
 									boolean created = false;
 									
 									if (toSet.equalsIgnoreCase("lobby"))
 									{
-										created = game.createPregameLobby(command.getPlayer().getLocation(), cuboid, gameType.getPregameInventory(), SignMessagePreset.BF_GAME);
+										created = game.createPregameLobby(command.getPlayer().getLocation(), cuboid, arenaMap.getPregameInventory(), SignMessagePreset.BF_GAME);
 									} else
 									{
-										created = game.createArena(new BFArena(game, cuboid, gameType.getGameInventory()));
+										created = game.createArena(new BFArena(game, cuboid));
 									}
 									
 									if (created)
@@ -130,7 +128,7 @@ public class BattleFrontierCommand implements CommandExecutor
 								{
 									command.sendSenderMessage("Please select a region with worldedit before setting the " + toSet, ChatColor.RED);
 								}
-							} else if (toSet.equalsIgnoreCase("spawn"))
+							} else if (toSet.equalsIgnoreCase("spawn") && command.getArgs().length == 5)
 							{
 								Arena arena = game.getArena();
 								

@@ -21,29 +21,9 @@ import us.arkyne.server.inventory.item.InventoryItem;
 public enum InventoryItemPreset implements InventoryItem
 {
 	EXIT_MINIGAME(ChatColor.RED + "Exit to Main Lobby", Material.REDSTONE_BLOCK, (player) -> ArkyneMain.getInstance().getMainLobbyHandler().getMainLobby().join(player)),
-	EXIT_GAME(ChatColor.RED + "Exit to Minigame Lobby", Material.REDSTONE_BLOCK, (player) -> { if (player.getJoinable() != null) player.getJoinable().leave(player); }),
+	EXIT_GAME(ChatColor.RED + "Exit to Minigame Lobby", Material.REDSTONE_BLOCK, (player) -> { if (player.getJoinable() != null) player.getJoinable().leave(player); });
 	
-	WARRIOR_SWORD(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Warrior Sword", Material.IRON_SWORD, new String[] {
-			ChatColor.GRAY + "Starter"
-	}, 6, 0),
-	WARRIOR_ABILITY(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Warrior Clone", Material.BOOK, new String[] {
-			ChatColor.GRAY + "Starter",
-			ChatColor.GOLD + "Right click to spawn a clone"
-	}, (player) -> player.spawnClone()),
-	WARRIOR_HELMET(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Warrior Helmet", Material.DIAMOND_HELMET, new String[] {
-			ChatColor.GRAY + "Starter"
-	}, 0, 10),
-	WARRIOR_CHESTPLATE(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Warrior Chestplate", Material.IRON_CHESTPLATE, new String[] {
-			ChatColor.GRAY + "Starter"
-	}, 0, 9),
-	WARRIOR_LEGGINGS(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Warrior Leggings", Material.DIAMOND_LEGGINGS, new String[] {
-			ChatColor.GRAY + "Starter"
-	}, 0, 12),
-	WARRIOR_BOOTS(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Warrior Boots", Material.DIAMOND_BOOTS, new String[] {
-			ChatColor.GRAY + "Starter"
-	}, 0, 10);
-	
-	//TODO: Set a timer, you can only do this every so often, also enchantment sparkle
+	//TODO: Set a timer, you can only use this item every so often, also enchantment sparkle
 	
 	private ItemStack item;
 	private InventoryClick inventoryClick;

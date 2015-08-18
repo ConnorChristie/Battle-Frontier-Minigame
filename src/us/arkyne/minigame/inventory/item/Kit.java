@@ -20,7 +20,7 @@ public abstract class Kit implements Inventory
 		return items[type.ordinal()];
 	}
 	
-	protected KitItem t(Type type)
+	protected KitItem k(Type type)
 	{
 		return items[type.ordinal()];
 	}
@@ -28,7 +28,7 @@ public abstract class Kit implements Inventory
 	protected void updateInventory()
 	{
 		invItems = new InventoryItem[] {
-				t(Type.WEAPON), null, null, null, t(Type.ABILITY), null, null, null, null,
+				k(Type.WEAPON), null, null, null, k(Type.ABILITY), null, null, null, null,
 				
 				null, null, null, null, null, null, null, null, null,
 				null, null, null, null, null, null, null, null, null,
@@ -36,7 +36,7 @@ public abstract class Kit implements Inventory
 		};
 		
 		armorItems = new InventoryItem[] {
-				t(Type.HELMET), t(Type.CHESTPLATE), t(Type.LEGGINGS), t(Type.BOOTS)
+				k(Type.HELMET), k(Type.CHESTPLATE), k(Type.LEGGINGS), k(Type.BOOTS)
 		};
 	}
 	
@@ -63,9 +63,9 @@ public abstract class Kit implements Inventory
 	public static enum Tier
 	{
 		STARTER(ChatColor.GRAY + "Starter"),
-		NORMAL(ChatColor.GRAY + "Normal"),
-		PRO(ChatColor.GRAY + "Pro"),
-		LEGEND(ChatColor.GRAY + "Legend");
+		NORMAL(ChatColor.RED + "Normal"),
+		PRO(ChatColor.AQUA + "Pro"),
+		LEGEND(ChatColor.GOLD + "Legend");
 		
 		private String name;
 		

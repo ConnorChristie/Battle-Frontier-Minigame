@@ -1,6 +1,7 @@
 package us.arkyne.minigame.inventory.item;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -10,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import us.arkyne.minigame.inventory.item.Kit.Tier;
+import us.arkyne.nms.item.GlowingItem;
 import us.arkyne.server.inventory.InventoryClick;
 import us.arkyne.server.inventory.item.InventoryItem;
 
@@ -22,6 +24,8 @@ public class KitItem implements InventoryItem
 	
 	private ItemStack item;
 	private InventoryClick inventoryClick;
+	
+	private String[] lore;
 	
 	private double attack;
 	private double defense;
@@ -53,6 +57,29 @@ public class KitItem implements InventoryItem
 		this.attack = attack;
 		this.defense = defense;
 		
+		lore(lore);
+		
+		return this;
+	}
+	
+	public KitItem click(InventoryClick click)
+	{
+		this.inventoryClick = click;
+		
+		return this;
+	}
+	
+	public KitItem glow(boolean addGlow)
+	{
+		item = addGlow ? GlowingItem.addGlow(item) : GlowingItem.removeGlow(item);
+		
+		return this;
+	}
+	
+	public KitItem lore(String... lore)
+	{
+		this.lore = lore;
+		
 		ItemMeta meta = item.getItemMeta();
 		List<String> loreList = new ArrayList<String>();
 		
@@ -63,15 +90,10 @@ public class KitItem implements InventoryItem
 		if (defense != 0)
 			loreList.add(ChatColor.GOLD + "Defense: " + defense);
 		
+		if (lore != null) loreList.addAll(Arrays.asList(lore));
+		
 		meta.setLore(loreList);
 		item.setItemMeta(meta);
-		
-		return this;
-	}
-	
-	public KitItem click(InventoryClick click)
-	{
-		this.inventoryClick = click;
 		
 		return this;
 	}
@@ -156,6 +178,11 @@ public class KitItem implements InventoryItem
 	public double getDefense()
 	{
 		return defense;
+	}
+	
+	public Type getType()
+	{
+		return type;
 	}
 	
 	public static enum Type

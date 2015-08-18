@@ -6,15 +6,14 @@ import org.bukkit.Location;
 
 import us.arkyne.server.game.arena.Arena;
 import us.arkyne.server.game.Game;
-import us.arkyne.server.inventory.Inventory;
 import us.arkyne.server.player.ArkynePlayer;
 import us.arkyne.server.util.Cuboid;
 
 public class BFArena extends Arena
 {
-	public BFArena(Game game, Cuboid cuboid, Inventory inventory)
+	public BFArena(Game game, Cuboid cuboid)
 	{
-		super(game, cuboid, inventory);
+		super(game, cuboid);
 	}
 	
 	public void onLoad()

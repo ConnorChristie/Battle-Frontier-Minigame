@@ -33,9 +33,9 @@ public class BFGame extends Game
 	
 	private int spawnRadius = 2;
 	
-	public BFGame(Minigame minigame, int id, String mapName)
+	public BFGame(Minigame minigame, int id, String mapName, String worldName)
 	{
-		super(minigame, id, 20, 2, mapName, SignMessagePreset.BF_GAME);
+		super(minigame, id, mapName, worldName, SignMessagePreset.BF_GAME);
 	}
 	
 	public void onLoad()
@@ -58,6 +58,16 @@ public class BFGame extends Game
 	protected void onGameEnd()
 	{
 		//Display message and what not
+	}
+	
+	public int getMinPlayers()
+	{
+		return 2;
+	}
+	
+	public int getMaxPlayers()
+	{
+		return 20;
 	}
 	
 	public void onPlayerDamage(ArkynePlayer player, EntityDamageEvent event)
@@ -175,7 +185,7 @@ public class BFGame extends Game
 		
 		for (ArkynePlayer player : players)
 		{
-			player.setExtra("inventory", new WarriorKit(Tier.NORMAL));
+			player.setExtra("inventory", new WarriorKit(Tier.PRO));
 			player.updateInventory();
 			
 			String team = teams.get(teamIndex);
