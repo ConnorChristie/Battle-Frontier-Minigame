@@ -5,6 +5,7 @@ import java.util.Map;
 import org.bukkit.Location;
 
 import us.arkyne.server.game.arena.Arena;
+import us.arkyne.server.game.team.ArkyneTeam;
 import us.arkyne.server.game.Game;
 import us.arkyne.server.player.ArkynePlayer;
 import us.arkyne.server.util.Cuboid;
@@ -28,7 +29,7 @@ public class BFArena extends Arena
 	
 	public Location getSpawn(ArkynePlayer player)
 	{
-		return getTeam(player.getExtra("team").toString()).getSpawn();
+		return ((ArkyneTeam) player.getExtra("team")).getSpawn();
 	}
 	
 	public BFArena(Map<String, Object> map)
