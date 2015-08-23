@@ -1,12 +1,21 @@
 package us.arkyne.minigame;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.bukkit.Location;
+
 import us.arkyne.minigame.command.BattleFrontierCommand;
 import us.arkyne.minigame.event.EventListener;
+import us.arkyne.minigame.game.BFArena;
 import us.arkyne.minigame.game.BFGame;
 import us.arkyne.server.minigame.Minigame;
+import us.arkyne.server.player.ArkynePlayer;
 
 public class BattleFrontier extends Minigame
 {
+	private Map<ArkynePlayer, Location> coreLocations = new HashMap<ArkynePlayer, Location>();
+	
 	public BattleFrontier()
 	{
 		super(MinigameMain.getInstance(), "BattleFrontier", "BF");
@@ -32,8 +41,8 @@ public class BattleFrontier extends Minigame
 		super.onUnload();
 	}
 
-	@Override
-	public int createGame(String mapName, String worldName)
+	@SuppressWarnings("unchecked")
+	public BFGame createGame(String mapName, String worldName)
 	{
 		int id = getGameHandler().getNextId();
 		
@@ -44,9 +53,40 @@ public class BattleFrontier extends Minigame
 			getGameHandler().addGame(game);
 			getGameHandler().save(game);
 			
-			return id;
+			return game;
 		}
 		
-		return -1;
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public BFArena createArena(String mapName, String worldName)
+	{
+		int id = getArenaHandler().getNextId();
+		
+		if (!getArenaHandler().containsArena(id))
+		{
+			BFArena arena = new BFArena(this, id, mapName, worldName);
+			
+			getArenaHandler().addArena(arena);
+			getArenaHandler().save(arena);
+			
+			return arena;
+		}
+		
+		return null;
+	}
+	
+	public void addCoreLocation(ArkynePlayer player, Location coreLocation)
+	{
+		coreLocations.put(player, coreLocation);
+	}
+	
+	public Location getCoreLocation(ArkynePlayer player)
+	{
+		Location core = coreLocations.get(player);
+		coreLocations.remove(player);
+		
+		return core;
 	}
 }

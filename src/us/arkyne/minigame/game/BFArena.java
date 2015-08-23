@@ -6,15 +6,14 @@ import org.bukkit.Location;
 
 import us.arkyne.server.game.arena.Arena;
 import us.arkyne.server.game.team.ArkyneTeam;
-import us.arkyne.server.game.Game;
+import us.arkyne.server.minigame.Minigame;
 import us.arkyne.server.player.ArkynePlayer;
-import us.arkyne.server.util.Cuboid;
 
 public class BFArena extends Arena
 {
-	public BFArena(Game game, Cuboid cuboid)
+	public BFArena(Minigame minigame, int id, String mapName, String worldName)
 	{
-		super(game, cuboid);
+		super(minigame, id, mapName, worldName);
 	}
 	
 	public void onLoad()
@@ -27,9 +26,29 @@ public class BFArena extends Arena
 		super.onUnload();
 	}
 	
+	public void addTeam(String team, Location spawn)
+	{
+		teams.add(new BFTeam(this, team, spawn));
+	}
+	
 	public Location getSpawn(ArkynePlayer player)
 	{
 		return ((ArkyneTeam) player.getExtra("team")).getSpawn();
+	}
+	
+	public BFTeam getTeamFromCore(Location core)
+	{
+		for (ArkyneTeam t : teams)
+		{
+			BFTeam team = (BFTeam) t;
+			
+			if (core.distance(team.getCore()) < 1)
+			{
+				return team;
+			}
+		}
+		
+		return null;
 	}
 	
 	public BFArena(Map<String, Object> map)

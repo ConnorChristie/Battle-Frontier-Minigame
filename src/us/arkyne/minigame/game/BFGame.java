@@ -294,6 +294,12 @@ public class BFGame extends Game
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public BFArena getArena()
+	{
+		return (BFArena) arena;
+	}
+	
 	protected IGameSubStatus getGameSubStatus(GameSubStatus status)
 	{
 		return GameSubStatusPreset.valueOf(status.name());
@@ -321,7 +327,7 @@ public class BFGame extends Game
 	
 	private void spawnPlayers()
 	{
-		List<ArkyneTeam> teams = getArena().getTeams();
+		List<? extends ArkyneTeam> teams = getArena().getTeams();
 		
 		int teamIndex = 0;
 		
