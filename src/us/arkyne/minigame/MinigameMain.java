@@ -4,7 +4,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.Plugin;
 
 import us.arkyne.minigame.game.BFGame;
-import us.arkyne.minigame.game.BFTeam;
+import us.arkyne.minigame.game.team.BFArenaTeam;
 import us.arkyne.minigame.inventory.InventoryItemPreset;
 import us.arkyne.minigame.inventory.InventoryPreset;
 import us.arkyne.minigame.message.SignMessagePreset;
@@ -26,7 +26,7 @@ public class MinigameMain extends MinigamePlugin
 		bf = new BattleFrontier();
 		
 		ConfigurationSerialization.registerClass(BFGame.class);
-		ConfigurationSerialization.registerClass(BFTeam.class);
+		ConfigurationSerialization.registerClass(BFArenaTeam.class);
 		
 		InventoryHandler.registerInventoryPresets(InventoryPreset.values());
 		InventoryItemHandler.registerInventoryItemPresets(InventoryItemPreset.values());

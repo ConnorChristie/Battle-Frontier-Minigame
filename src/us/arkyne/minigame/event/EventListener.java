@@ -23,9 +23,11 @@ import org.bukkit.metadata.MetadataValue;
 
 import us.arkyne.minigame.BattleFrontier;
 import us.arkyne.minigame.MinigameMain;
-import us.arkyne.minigame.game.BFArena;
 import us.arkyne.minigame.game.BFGame;
-import us.arkyne.minigame.game.BFTeam;
+import us.arkyne.minigame.game.BFGameArena;
+import us.arkyne.minigame.game.arena.BFArena;
+import us.arkyne.minigame.game.team.BFArenaTeam;
+import us.arkyne.minigame.game.team.BFGameTeam;
 import us.arkyne.server.ArkyneMain;
 import us.arkyne.server.player.ArkynePlayer;
 
@@ -59,16 +61,23 @@ public class EventListener implements Listener
 					
 					if (arena != null)
 					{
-						BFTeam team = (BFTeam) arena.getTeam(ChatColor.stripColor(lore.get(1)).replace("Team: ", ""));
+						BFArenaTeam team = (BFArenaTeam) arena.getTeam(ChatColor.stripColor(lore.get(1)).replace("Team: ", ""));
 						
 						if (team != null)
 						{
-							Location coreLocation = block.getLocation().add(0.5, 1, 0.5);
+							Location coreLocation = block.getLocation().add(0.5, 1.45, 0.5);
 							
 							block.getLocation().getWorld().spawnEntity(coreLocation, EntityType.ENDER_CRYSTAL);
 							block.getLocation().getWorld().save();
 							
 							team.setCore(coreLocation);
+							arena.save();
+							
+							event.getPlayer().getInventory().remove(event.getItem());
+							
+							player.sendMessage("Successfully set the core for: " + team.getTeamName(), ChatColor.GREEN);
+							player.sendMessage("Now you can either create more teams, or: ", ChatColor.AQUA);
+							player.sendMessage("Create a game with: /{cmd} creategame " + arena.getId(), ChatColor.AQUA);
 						} else
 						{
 							player.sendMessage("The team this rod is attached to, no longer exists", ChatColor.RED);
@@ -100,11 +109,11 @@ public class EventListener implements Listener
 					if (player.getJoinable() != null && player.getJoinable() instanceof BFGame)
 					{
 						BFGame game = (BFGame) player.getJoinable();
-						BFTeam team = game.getArena().getTeamFromCore(event.getEntity().getLocation());
+						BFGameTeam team = ((BFGameArena) game.getGameArena()).getTeamFromCore(event.getEntity().getLocation());
 						
 						if (team != null)
 						{
-							System.out.println("That is their core: " + team.getTeamName());
+							System.out.println("That is their core: " + team.getTeam().getTeamName());
 						}
 					} else if (player.isManager() && player.getOnlinePlayer().getGameMode() == GameMode.CREATIVE)
 					{

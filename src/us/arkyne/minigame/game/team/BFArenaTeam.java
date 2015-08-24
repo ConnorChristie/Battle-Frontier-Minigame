@@ -1,17 +1,17 @@
-package us.arkyne.minigame.game;
+package us.arkyne.minigame.game.team;
 
 import java.util.Map;
 
 import org.bukkit.Location;
 
 import us.arkyne.server.game.arena.Arena;
-import us.arkyne.server.game.team.ArkyneTeam;
+import us.arkyne.server.game.team.ArenaTeam;
 
-public class BFTeam extends ArkyneTeam
+public class BFArenaTeam extends ArenaTeam
 {
 	private Location core;
 	
-	public BFTeam(Arena arena, String teamName, Location spawn)
+	public BFArenaTeam(Arena arena, String teamName, Location spawn)
 	{
 		super(arena, teamName, spawn);
 	}
@@ -26,7 +26,7 @@ public class BFTeam extends ArkyneTeam
 		return core;
 	}
 	
-	public BFTeam(Map<String, Object> map)
+	public BFArenaTeam(Map<String, Object> map)
 	{
 		super(map);
 		

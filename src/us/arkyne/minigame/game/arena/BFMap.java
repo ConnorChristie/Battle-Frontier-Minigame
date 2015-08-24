@@ -1,9 +1,9 @@
-package us.arkyne.minigame.game;
+package us.arkyne.minigame.game.arena;
 
 import us.arkyne.minigame.inventory.InventoryPreset;
 import us.arkyne.server.inventory.Inventory;
 
-public enum ArenaMap
+public enum BFMap
 {
 	HEAVEN_HELL("Heaven & Hell", "Battle_Frontier_Heaven_Hell", InventoryPreset.BF_PREGAME_LOBBY);
 	
@@ -12,7 +12,7 @@ public enum ArenaMap
 	
 	private Inventory pregame;
 	
-	private ArenaMap(String mapName, String worldName, Inventory pregame)
+	private BFMap(String mapName, String worldName, Inventory pregame)
 	{
 		this.mapName = mapName;
 		this.worldName = worldName;

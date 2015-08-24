@@ -1,4 +1,4 @@
-package us.arkyne.minigame.game;
+package us.arkyne.minigame;
 
 import org.bukkit.ChatColor;
 

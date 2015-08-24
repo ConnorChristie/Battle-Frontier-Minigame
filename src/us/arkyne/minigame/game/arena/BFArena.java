@@ -1,13 +1,12 @@
-package us.arkyne.minigame.game;
+package us.arkyne.minigame.game.arena;
 
 import java.util.Map;
 
 import org.bukkit.Location;
 
+import us.arkyne.minigame.game.team.BFArenaTeam;
 import us.arkyne.server.game.arena.Arena;
-import us.arkyne.server.game.team.ArkyneTeam;
 import us.arkyne.server.minigame.Minigame;
-import us.arkyne.server.player.ArkynePlayer;
 
 public class BFArena extends Arena
 {
@@ -28,27 +27,7 @@ public class BFArena extends Arena
 	
 	public void addTeam(String team, Location spawn)
 	{
-		teams.add(new BFTeam(this, team, spawn));
-	}
-	
-	public Location getSpawn(ArkynePlayer player)
-	{
-		return ((ArkyneTeam) player.getExtra("team")).getSpawn();
-	}
-	
-	public BFTeam getTeamFromCore(Location core)
-	{
-		for (ArkyneTeam t : teams)
-		{
-			BFTeam team = (BFTeam) t;
-			
-			if (core.distance(team.getCore()) < 1)
-			{
-				return team;
-			}
-		}
-		
-		return null;
+		teams.add(new BFArenaTeam(this, team, spawn));
 	}
 	
 	public BFArena(Map<String, Object> map)

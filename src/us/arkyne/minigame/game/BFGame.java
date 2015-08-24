@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -24,15 +25,19 @@ import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import us.arkyne.minigame.GameSubStatusPreset;
 import us.arkyne.minigame.MinigameMain;
+import us.arkyne.minigame.game.arena.BFArena;
 import us.arkyne.minigame.inventory.InventoryPreset;
 import us.arkyne.minigame.inventory.item.Kit.Tier;
 import us.arkyne.minigame.inventory.item.WarriorKit;
 import us.arkyne.minigame.message.SignMessagePreset;
 import us.arkyne.server.game.Game;
+import us.arkyne.server.game.GameArena;
+import us.arkyne.server.game.arena.Arena;
 import us.arkyne.server.game.status.GameSubStatus;
 import us.arkyne.server.game.status.IGameSubStatus;
-import us.arkyne.server.game.team.ArkyneTeam;
+import us.arkyne.server.game.team.GameTeam;
 import us.arkyne.server.inventory.Inventory;
 import us.arkyne.server.minigame.Minigame;
 import us.arkyne.server.player.ArkynePlayer;
@@ -44,9 +49,9 @@ public class BFGame extends Game
 	
 	private int fireworks = 0;
 	
-	public BFGame(Minigame minigame, int id, String mapName, String worldName)
+	public BFGame(Minigame minigame, Arena arena, int id)
 	{
-		super(minigame, id, mapName, worldName, SignMessagePreset.BF_GAME);
+		super(minigame, arena, id, SignMessagePreset.BF_GAME);
 	}
 	
 	public void onLoad()
@@ -294,10 +299,14 @@ public class BFGame extends Game
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public BFArena getArena()
+	protected Location getArenaSpawn(ArkynePlayer player)
 	{
-		return (BFArena) arena;
+		return ((BFArena) getArena()).getSpawn(player);
+	}
+
+	protected GameArena getGameArena(Arena arena)
+	{
+		return new BFGameArena(this, arena);
 	}
 	
 	protected IGameSubStatus getGameSubStatus(GameSubStatus status)
@@ -327,7 +336,7 @@ public class BFGame extends Game
 	
 	private void spawnPlayers()
 	{
-		List<? extends ArkyneTeam> teams = getArena().getTeams();
+		List<GameTeam> teams = getGameArena().getTeams();
 		
 		int teamIndex = 0;
 		
@@ -352,16 +361,16 @@ public class BFGame extends Game
 			
 			Scoreboard sb = ((ArkyneScoreboard) p.getExtra("scoreboard")).getScoreboard();
 			
-			for (ArkyneTeam t : getArena().getTeams())
+			for (GameTeam t : teams)
 			{
-				Team team = sb.registerNewTeam(t.getTeamName());
+				Team team = sb.registerNewTeam(t.getTeam().getTeamName());
 				
 				for (ArkynePlayer tp : t.getPlayers())
 				{
 					team.addEntry(tp.getOnlinePlayer().getName());
 				}
 				
-				team.setPrefix(t.getColor());
+				team.setPrefix(t.getTeam().getColor());
 				team.setNameTagVisibility(NameTagVisibility.ALWAYS);
 			}
 		}

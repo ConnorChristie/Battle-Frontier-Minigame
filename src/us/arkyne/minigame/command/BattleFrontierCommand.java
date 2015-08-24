@@ -18,16 +18,17 @@ import com.sk89q.worldedit.bukkit.selections.Selection;
 
 import us.arkyne.minigame.BattleFrontier;
 import us.arkyne.minigame.MinigameMain;
-import us.arkyne.minigame.game.BFArena;
-import us.arkyne.minigame.game.BFTeam;
-import us.arkyne.minigame.game.ArenaMap;
+import us.arkyne.minigame.game.BFGame;
+import us.arkyne.minigame.game.arena.BFMap;
+import us.arkyne.minigame.game.arena.BFArena;
+import us.arkyne.minigame.game.team.BFArenaTeam;
 import us.arkyne.minigame.inventory.InventoryPreset;
 import us.arkyne.minigame.message.SignMessagePreset;
 import us.arkyne.server.ArkyneMain;
 import us.arkyne.server.command.Command;
 import us.arkyne.server.command.CommandExecutor;
 import us.arkyne.server.game.arena.Arena;
-import us.arkyne.server.game.team.ArkyneTeam;
+import us.arkyne.server.game.team.ArenaTeam;
 import us.arkyne.server.game.Game;
 import us.arkyne.server.util.Cuboid;
 
@@ -37,7 +38,7 @@ public class BattleFrontierCommand implements CommandExecutor
 	
 	private BattleFrontier bf;
 	
-	private Map<Integer, ArenaMap> arenaMaps = new HashMap<Integer, ArenaMap>();
+	private Map<Integer, BFMap> arenaMaps = new HashMap<Integer, BFMap>();
 	
 	public BattleFrontierCommand()
 	{
@@ -56,7 +57,12 @@ public class BattleFrontierCommand implements CommandExecutor
 				
 				if (arena != null)
 				{
-					//TODO: Set the game's arena id and regen the arena into a new world!
+					BFGame game = bf.createGame(arena);
+					
+					if (game != null)
+					{
+						command.sendSenderMessage("Successfully created a new game!", ChatColor.GREEN);
+					}
 				}
 			} catch (NumberFormatException e)
 			{
@@ -110,7 +116,7 @@ public class BattleFrontierCommand implements CommandExecutor
 			return true;
 		} else if (command.isSubCommandMessageIfError("createarena", 1, false, "Usage: /{cmd} createarena <map>"))
 		{
-			ArenaMap map = ArenaMap.valueOf(command.getArg(1).toUpperCase());
+			BFMap map = BFMap.valueOf(command.getArg(1).toUpperCase());
 			
 			if (map != null)
 			{
@@ -125,7 +131,7 @@ public class BattleFrontierCommand implements CommandExecutor
 			} else
 			{
 				command.sendSenderMessage("Could not find a map with that name", ChatColor.RED);
-				command.sendSenderMessage("Maps: " + Arrays.toString(ArenaMap.values()).replace("[", "").replace("]", ""), ChatColor.RED);
+				command.sendSenderMessage("Maps: " + Arrays.toString(BFMap.values()).replace("[", "").replace("]", ""), ChatColor.RED);
 			}
 			
 			return true;
@@ -178,9 +184,11 @@ public class BattleFrontierCommand implements CommandExecutor
 								List<String> lore = new ArrayList<String>();
 								
 								lore.add(ChatColor.GOLD + "Arena: " + ChatColor.AQUA + arena.getId());
-								lore.add(ChatColor.GOLD + "Team: " + teamName);
+								lore.add(ChatColor.GOLD + "Team: " + ChatColor.AQUA + teamName);
 								
 								meta.setLore(lore);
+								meta.setDisplayName(ChatColor.GOLD + "Core for " + ChatColor.AQUA + teamName + ChatColor.GOLD + " team");
+								
 								coreCreator.setItemMeta(meta);
 								
 								command.getPlayer().getOnlinePlayer().getInventory().addItem(coreCreator);
@@ -189,13 +197,6 @@ public class BattleFrontierCommand implements CommandExecutor
 								command.sendSenderMessage("Next, set the core for this team, to do so:", ChatColor.AQUA);
 								command.sendSenderMessage("Right click the ground, with this rod, where you want the core to be!", ChatColor.AQUA);
 							}
-						} else if (toSet.equalsIgnoreCase("core"))
-						{
-							String teamName = command.getArg(4);
-							
-							command.sendSenderMessage("Successfully set the core for: " + teamName, ChatColor.GREEN);
-							command.sendSenderMessage("Now you can either create more teams, or: ", ChatColor.AQUA);
-							command.sendSenderMessage("Create a game with: /{cmd} creategame " + arena.getId(), ChatColor.AQUA);
 						}
 					}
 				}
@@ -231,7 +232,7 @@ public class BattleFrontierCommand implements CommandExecutor
 								{
 									Cuboid cuboid = new Cuboid((World) selection.getWorld(), selection.getNativeMinimumPoint(), selection.getNativeMaximumPoint());
 									
-									ArenaMap arenaMap = arenaMaps.get(id);
+									BFMap arenaMap = arenaMaps.get(id);
 									boolean created = false;
 									
 									if (toSet.equalsIgnoreCase("lobby"))
@@ -284,11 +285,11 @@ public class BattleFrontierCommand implements CommandExecutor
 								
 								if (arena != null)
 								{
-									ArkyneTeam team = arena.getTeam(command.getArg(4));
+									ArenaTeam team = arena.getTeam(command.getArg(4));
 									
 									if (team != null)
 									{
-										((BFTeam) team).setCore(bf.getCoreLocation(command.getPlayer()));
+										((BFArenaTeam) team).setCore(bf.getCoreLocation(command.getPlayer()));
 										
 										command.sendSenderMessage("Successfully set the core for the " + command.getArg(4) + " team!", ChatColor.GREEN);
 									} else

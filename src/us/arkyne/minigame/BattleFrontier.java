@@ -7,8 +7,9 @@ import org.bukkit.Location;
 
 import us.arkyne.minigame.command.BattleFrontierCommand;
 import us.arkyne.minigame.event.EventListener;
-import us.arkyne.minigame.game.BFArena;
 import us.arkyne.minigame.game.BFGame;
+import us.arkyne.minigame.game.arena.BFArena;
+import us.arkyne.server.game.arena.Arena;
 import us.arkyne.server.minigame.Minigame;
 import us.arkyne.server.player.ArkynePlayer;
 
@@ -42,13 +43,13 @@ public class BattleFrontier extends Minigame
 	}
 
 	@SuppressWarnings("unchecked")
-	public BFGame createGame(String mapName, String worldName)
+	public BFGame createGame(Arena arena)
 	{
 		int id = getGameHandler().getNextId();
 		
 		if (!getGameHandler().containsGame(id))
 		{
-			BFGame game = new BFGame(this, id, mapName, worldName);
+			BFGame game = new BFGame(this, arena, id);
 			
 			getGameHandler().addGame(game);
 			getGameHandler().save(game);
