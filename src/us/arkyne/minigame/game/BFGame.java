@@ -301,7 +301,7 @@ public class BFGame extends Game
 	
 	protected Location getArenaSpawn(ArkynePlayer player)
 	{
-		return ((BFArena) getArena()).getSpawn(player);
+		return ((BFArena) getArena()).getSpawn(this, player);
 	}
 
 	protected GameArena getGameArena(Arena arena)

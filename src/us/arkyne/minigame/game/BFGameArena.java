@@ -34,6 +34,6 @@ public class BFGameArena extends GameArena
 	
 	protected GameTeam getTeam(ArenaTeam team)
 	{
-		return new BFGameTeam(team);
+		return new BFGameTeam(game, team);
 	}
 }

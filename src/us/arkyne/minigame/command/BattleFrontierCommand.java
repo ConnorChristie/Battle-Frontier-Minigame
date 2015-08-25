@@ -62,6 +62,9 @@ public class BattleFrontierCommand implements CommandExecutor
 					if (game != null)
 					{
 						command.sendSenderMessage("Successfully created a new game!", ChatColor.GREEN);
+						
+						//TODO: Create a pre-game lobby maybe in the arena class?
+						//TODO: Teleport to game arena, tell them to set a pre-game lobby
 					}
 				}
 			} catch (NumberFormatException e)

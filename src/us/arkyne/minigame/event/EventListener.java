@@ -77,7 +77,7 @@ public class EventListener implements Listener
 							
 							player.sendMessage("Successfully set the core for: " + team.getTeamName(), ChatColor.GREEN);
 							player.sendMessage("Now you can either create more teams, or: ", ChatColor.AQUA);
-							player.sendMessage("Create a game with: /{cmd} creategame " + arena.getId(), ChatColor.AQUA);
+							player.sendMessage("Create a game with: /bf creategame " + arena.getId(), ChatColor.AQUA);
 						} else
 						{
 							player.sendMessage("The team this rod is attached to, no longer exists", ChatColor.RED);
